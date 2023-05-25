@@ -1,21 +1,20 @@
-body {
-    background-color: white;
-    font-family: 'Times New Roman', Times, serif;
-    margin: 0%;
-}
-
-header {
-    padding-bottom: 5%;
-    padding-top: 5%;
-    text-align: center;
-}
-
 article {
     font-size: 1.4em;
     padding-bottom: 10%;
     padding-left: 25%;
     padding-right: 25%;
     text-align: justify;
+}
+
+body {
+    background-color: white;
+    font-family: 'Times New Roman', Times, serif;
+    margin: 0%;
+}
+
+footer {
+    text-align: center;
+    padding: 2.5%;
 }
 
 h1 {
@@ -29,6 +28,12 @@ h5 {
     font-weight: normal;
 }
 
+header {
+    padding-bottom: 5%;
+    padding-top: 5%;
+    text-align: center;
+}
+
 .big-name {
     color: white;
     font-family: Georgia;
@@ -38,6 +43,25 @@ h5 {
     letter-spacing: 0.2em;
     text-shadow: -0.05em 0em black;
     -webkit-text-stroke: 0.01em black;
+}
+
+.project {
+    border: 0.1em solid black;
+    margin-bottom: 5%;
+    margin-top: 5%;
+    padding: 1.5em;
+}
+
+.project-images {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 0.75em 0.75em
+}
+
+.project-title {
+    font-family: Georgia;
+    font-style: italic;
+    text-decoration: none;
 }
 
 .socials-container {
@@ -52,23 +76,4 @@ h5 {
     padding-left: 2.5%;
     padding-right: 2.5%;
     text-decoration: none;
-}
-
-.project {
-    border: 0.1em solid black;
-    margin-bottom: 5%;
-    margin-top: 5%;
-    padding: 1.5em;
-}
-
-.project-title {
-    font-family: Georgia;
-    font-style: italic;
-    text-decoration: none;
-}
-
-.project-images {
-    display: grid;
-    grid-template-columns: auto auto;
-    gap: 0.75em 0.75em
 }
