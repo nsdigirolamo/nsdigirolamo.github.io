@@ -10,10 +10,16 @@ header {
 }
 
 article {
+    padding-top: 2.5%;
+    padding-bottom: 2.5%;
     padding-left: 25%;
     padding-right: 25%;
     text-align: justify;
     font-size: 1.4em;
+}
+
+h1 {
+    font-weight: normal;
 }
 
 .title {
