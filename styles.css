@@ -1,43 +1,42 @@
 body {
-    margin: 0%;
     background-color: white;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin: 0%;
 }
 
 header {
-    text-align: center;
-    padding-top: 5%;
     padding-bottom: 5%;
+    padding-top: 5%;
+    text-align: center;
 }
 
 article {
-    padding-top: 2.5%;
+    font-size: 1.4em;
     padding-bottom: 2.5%;
     padding-left: 25%;
     padding-right: 25%;
+    padding-top: 2.5%;
     text-align: justify;
-    font-size: 1.4em;
 }
 
 h1 {
     font-weight: normal;
 }
 
-.title {
+.big-name {
     color: white;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    font-weight: bold;
-    font-style: italic;
-    letter-spacing: 0.2em;
     font-size: 5em;
+    font-style: italic;
+    font-weight: bold;
+    letter-spacing: 0.2em;
     text-shadow: -0.05em 0em black;
     -webkit-text-stroke: 0.01em black;
 }
 
 .socials-container {
-    padding: 2%;
-    font-family: 'Times New Roman', Times, serif;
-    font-style: italic;
     font-size: 1.4em;
+    font-style: italic;
+    padding: 2%;
     text-align: center;
 }
 
