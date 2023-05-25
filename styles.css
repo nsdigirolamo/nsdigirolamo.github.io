@@ -1,6 +1,6 @@
 body {
     background-color: white;
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-family: 'Times New Roman', Times, serif;
     margin: 0%;
 }
 
@@ -19,12 +19,19 @@ article {
 }
 
 h1 {
+    font-family: Georgia;
     font-style: italic;
+    font-weight: normal;
+}
+
+h5 {
+    font-family: Georgia;
     font-weight: normal;
 }
 
 .big-name {
     color: white;
+    font-family: Georgia;
     font-size: 5em;
     font-style: italic;
     font-weight: bold;
@@ -34,6 +41,7 @@ h1 {
 }
 
 .socials-container {
+    font-family: Georgia;
     font-size: 1.4em;
     font-style: italic;
     padding: 2%;
@@ -54,6 +62,7 @@ h1 {
 }
 
 .project-title {
+    font-family: Georgia;
     font-style: italic;
     text-decoration: none;
 }
