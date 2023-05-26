@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Nicholas DiGirolamo</title>
+    <link rel="stylesheet" href="styles.css"/>
+</head>
+
+<body>
+    <header>
+        <div class="title-text">
+            PROJECTS
+        </div>
+        <div class="navbar">
+            <a class="nav-element" href="./index.html">Home</a> |
+            <a class="nav-element" href="./projects.html#favorite-projects">Favorite Projects</a> |
+            <a class="nav-element" href="./projects.html#other-projects">Other Projects</a>
+        </div>
+    </header>
+
+    <article id="favorite-projects">
+        <h1>My Favorite Personal Projects</h1>
+
+            <div class="project">
+                <a class="project-title" href="https://github.com/nsdigirolamo/nicks-ray-tracer">Nick's Ray Tracer</a>
+                <p>
+                    A ray tracer written in Rust following the 
+                    <a href="https://raytracing.github.io/"><i>Ray Tracing in One Weekend</i></a> 
+                    book series. This is a more serious follow-up to my 
+                    <a href="https://github.com/nsdigirolamo/ray-tracing-in-one-weekend">previous</a>
+                    attempt where I did the same exact thing but it was written
+                    in C instead. Below are some sample images I made using 
+                    the ray tracer.
+                </p>
+                <div class="project-images">
+                    <img width="100%" src="https://i3.lensdump.com/i/RGirMi.png"/>
+                    <img width="100%" src="https://i1.lensdump.com/i/RGigdm.png"/>
+                    <img width="100%" src="https://i1.lensdump.com/i/TWzgpC.png"/>
+                    <img width="100%" src="https://i1.lensdump.com/i/TjL16M.png"/>
+                </div>
+            </div>
+
+            <div class="project">
+                <a class="project-title" href="https://github.com/nsdigirolamo/PowerPortals">PowerPortals</a>
+                <p>
+                    A lightweight Spigot plugin for <i>Minecraft</i> that adds 
+                    interconnected portals. This plugin is heavily inspired by 
+                    the now outdated 
+                    <a href="https://github.com/Wormhole-X-Treme/Wormhole-X-Treme">Wormhole-X-Treme</a> 
+                    Bukkit plugin. Players can build portals in-game and 
+                    teleport between them. Each portal has its own 
+                    unique name, determined by the player that built it. See the 
+                    <a href="https://github.com/nsdigirolamo/PowerPortals/wiki/PowerPortals-Home">wiki page on GitHub</a> 
+                    for more information.
+                </p>
+            </div>
+
+            <div class="project">
+                <a class="project-title" href="https://github.com/nsdigirolamo/pygame-unit-circle">Unit Circle Toy</a>
+                <p>
+                    A single-file unit circle toy written in Python with Pygame. 
+                    Helps to visualize the relationship between a unit circle 
+                    and different trigonometric functions. Not a lot going on
+                    here but I'm still proud of it.
+                </p>
+            </div>
+
+    </article>
+
+    <article id="other-projects">
+        <h1>Other Notable Personal Projects</h1>
+
+        <div class="project">
+            <a class="project-title" href="https://github.com/nsdigirolamo/cisc361-assignment3">Simple Shell Assignment</a>
+            <p>
+                A shell written in C for the CISC361: Operating Systems course 
+                at the University of Delaware. This was done during the Spring
+                2023 semester. It has a few built-in shell commands like list,
+                kill, printenv, etc. and has limited support for pipes and
+                file redirects.
+            </p>
+        </div>
+
+        <div class="project">
+            <a class="project-title" href="https://github.com/nsdigirolamo/rust-software-renderer">Realtime Software Renderer</a>
+            <p>
+                A realtime software renderer written in Rust. It's incomplete
+                and really untested, but it (barely) works. Also, I managed to
+                import a wireframe of the Utah teapot and recorded a video of
+                me floating around it that you can watch below.
+            </p>
+            <iframe style="display: block; width: 100%; aspect-ratio: 16/9;" src="https://www.youtube.com/embed/oLVnrsqx9yo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+    </article>
+
+    <footer>
+        Copyright © 2023 - Nicholas DiGirolamo 
+    </footer>
+</body>
