@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> nsdigirolamo </title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+</head>
+
+        <style>
+            body {
+                text-align: justify
+            }
+        </style>
+    </head>
+    <header>
+    
+        <li><a href="/">About Me</a></li>
+    
+        <li><a href="/posts/">Posts</a></li>
+    
+</header>
+
+    <body>
+        <main>
+            <h1>Ray Tracing in One Weekend</h1>
+            <p>This post is going to be about the
+<a href="https://github.com/nsdigirolamo/ray-tracing-playground">ray tracer</a> I&rsquo;m writing
+in C++. This is my third attempt now at making a ray tracer. My previous
+projects on this topic can be found
+<a href="https://github.com/nsdigirolamo/ray-tracing-in-one-weekend">here</a> and
+<a href="https://github.com/nsdigirolamo/nicks-ray-tracer">here</a>. All three projects are
+based heavily around the free online textbook series
+<a href="https://raytracing.github.io/"><em>Ray Tracing in One Weekend</em></a> by Peter Shirley,
+Trevor Black, and Steve Hollasch.</p>
+<p>I want to gain a deeper understanding into how ray tracers are created. My
+previous two attempts felt like I was just following instructions rather than
+actually learning anything. This time around I intend on spending more time
+gaining a proper understanding of the things I&rsquo;m creating, rather than just
+copy/pasting from the textbook. I&rsquo;m still going to be using the textbook for
+feature ideas, but I am going to try to avoid just reading the code explanations
+and just making a one-to-one copy of their implementation.</p>
+<p>Most importantly, I&rsquo;m going to try my best to solve problems with my own
+research (googling) and only resort to the textbook if I get really stuck.</p>
+<p><img src="/ray-tracing-in-one-weekend/testing_normals.png" alt="test"></p>
+<p>Above is one of the first images I created. Intersections with the sphere
+returned the surface normals at each intersection point, and then I used those
+normals to color the sphere. After some work, I managed to generate something
+like the next image.</p>
+<p><img src="/ray-tracing-in-one-weekend/banding.png" alt="banding.png"></p>
+<p>I added a diffuse material and the ability to check for plane intersections. But
+clearly, something is wrong. What&rsquo;s going on with all that weird banding? The
+issue has to do with my intersection code. Below is an approximation of what&rsquo;s
+going on:</p>
+<pre tabindex="0"><code>if ( /** check for ray intersection */ ) {
+
+	double distance = /** distance along the ray where the intersection occurs */
+
+	Point intersection = ray.origin + ray.direction * distance;
+
+	Hit hit { intersection };
+
+	return hit;
+}
+</code></pre><p>Hopefully the above pseudocode isn&rsquo;t too opaque. I check to make sure an
+intersection exists, and if it does I get the distance along my ray where the
+intersection occurs. The issue comes along when I start recursively scattering
+rays.</p>
+<p>Once an intersection occurs, I spawn a new ray with its origin at the
+intersection point. The ray will start at this origin, and then look along
+whatever direction its pointing for an intersection with an object.</p>
+<p>But the origin of my scattered ray is going to be on the very surface of an
+object, so the ray will detect an intersection at its own origin! I suspect
+the banding comes from some weird floating point issues, where sometimes the
+origin isn&rsquo;t <em>exactly</em> on the surface of the plane, so the rays fail to
+intersect with their own origins.</p>
+<p>Below solves the issue. I just need to throw out any intersections below some
+small minimum distance.</p>
+<pre tabindex="0"><code>double minimum_distance = 0.0001
+
+if ( /** check for ray intersection */ ) {
+
+	double distance = /** distance along the ray where the intersection occurs */
+
+	if (distance &lt; minimum_distance) { return {}; }
+
+	Point intersection = ray.origin + ray.direction * distance;
+
+	Hit hit {intersection};
+
+	return hit;
+}
+</code></pre><p>Below is the same image with the issue solved. Much nicer looking. I found the
+solution to this problem after a quick google search. I found
+<a href="https://www.reddit.com/r/rust/comments/nacl51/weird_banding_on_custom_ray_tracer/">this reddit post</a>
+with basically the same issue I was having, and the
+<a href="https://www.reddit.com/r/rust/comments/nacl51/weird_banding_on_custom_ray_tracer/gxted9h/">top comment</a>
+explained what they thought was the issue, and that&rsquo;s what led me to the
+solution. Ironically, if I had been reading the <em>Ray Tracing in One Weekend</em>
+textbook as religiously as I was in my last two ray tracing projects, I would
+have quickly found their
+<a href="https://raytracing.github.io/books/RayTracingInOneWeekend.html#diffusematerials/fixingshadowacne">solution</a>
+to this problem. They seemed to agree with me that the issue came down to some
+floating point rounding issues. Regardless, I&rsquo;m happy I was able to find the
+fix on my own without simply being given the solution.</p>
+<p><img src="/ray-tracing-in-one-weekend/fixed_banding.png" alt="fixed_banding.png"></p>
+<p>The next step for me was the implement the other materials from the textbook.
+I knew I needed metals and dielectrics. Below are my metals. The metals look a
+bit better because I&rsquo;m using 100 samples per pixel and a step depth of
+50 bounces. The previous images only used 10 for both values.</p>
+<p><img src="/ray-tracing-in-one-weekend/metals.png" alt="metals.png"></p>
+<p>And dielectrics.</p>
+<p><img src="/ray-tracing-in-one-weekend/depth_of_field.png" alt="depth_of_field.png"></p>
+<p>This image took an embarrassingly long time time code. Internally, the code
+creates this blur effect with a thin disk behind the view port. The view port
+exists in the 3D scene, and where-ever the view plane intersects 3D space,
+that is where objects are most in focus.</p>
+<p>For the longest time, my depth of field effect was just not working. The
+entire scene was blurry instead of just the closer and further away objects.
+Eventually, I tracked down the reason.</p>
+<p>My ray tracer&rsquo;s camera has an origin and a viewport. The origin is where rays
+originate from, and the viewport is where the rays will be directed. For each
+pixel, I calculate the pixel&rsquo;s location in 3D space based on this viewport. So
+to color a pixel in the resulting image, I just point the ray towards that
+pixel&rsquo;s location on the viewport. And this works great if everything is always
+in focus.</p>
+<p>But when I wanted to add a defocus, the ray&rsquo;s origin was now no longer the same
+as the camera origin. My pinhole camera became a very-wide-hole camera, and thus
+the rays were no longer pointing towards the pixel location in space. All my
+rays were offset by the random defocus offset, so everything was blurry! To fix
+this, all I had to do was adjust for the offset and now only the things outside
+of the viewport&rsquo;s plane are blurry, as I intentioned!</p>
+
+        </main>
+    </body>
+    <footer>
+    <p>Copyright &copy; 2024 Nicholas DiGirolamo</p>
+</footer>
+
+</html>

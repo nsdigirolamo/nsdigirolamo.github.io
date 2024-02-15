@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nicholas DiGirolamo on nsdigirolamo.com</title>
+    <link>https://example.org/</link>
+    <description>Recent content in Nicholas DiGirolamo on nsdigirolamo.com</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 14 Feb 2024 22:53:21 -0500</lastBuildDate>
+    <atom:link href="https://example.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ray Tracing in One Weekend</title>
+      <link>https://example.org/posts/ray-tracing-in-one-weekend/</link>
+      <pubDate>Wed, 14 Feb 2024 22:53:21 -0500</pubDate>
+      <guid>https://example.org/posts/ray-tracing-in-one-weekend/</guid>
+      <description>This post is going to be about the ray tracer I&amp;rsquo;m writing in C++. This is my third attempt now at making a ray tracer. My previous projects on this topic can be found here and here. All three projects are based heavily around the free online textbook series Ray Tracing in One Weekend by Peter Shirley, Trevor Black, and Steve Hollasch.&#xA;I want to gain a deeper understanding into how ray tracers are created.</description>
+    </item>
+  </channel>
+</rss>
