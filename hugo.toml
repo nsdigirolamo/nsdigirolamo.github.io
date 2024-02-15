@@ -1,0 +1,15 @@
+baseURL = 'https://example.org/'
+languageCode = 'en-us'
+title = 'nsdigirolamo.com'
+
+custom_css = ["css/custom.css"]
+
+[menus]
+    [[menus.main]]
+        name = 'About Me'
+        pageRef = '/'
+        weight = 10
+    [[menus.main]]
+        name = 'Posts'
+        pageRef = '/posts'
+        weight = 20
