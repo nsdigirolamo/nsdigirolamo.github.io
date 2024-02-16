@@ -7,7 +7,11 @@
     <body>
         <main>
             {{ range site.Menus.contacts.ByWeight }}
-                <li style="display:block;padding:1vh"><a href="{{ .URL }}" target="_blank">{{ .Name }}</a></li>
+                <li style="display:block;padding:1vh">
+                    <a href="{{ .URL }}" target="_blank">
+                        {{ .Name }}
+                    </a>
+                </li>
             {{ end }}
         </main>
     </body>
