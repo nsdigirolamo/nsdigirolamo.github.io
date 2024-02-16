@@ -5,11 +5,29 @@ title = 'nsdigirolamo.com'
 custom_css = ["css/custom.css"]
 
 [menus]
-    [[menus.main]]
-        name = 'About Me'
-        pageRef = '/'
-        weight = 10
+
     [[menus.main]]
         name = 'Posts'
         pageRef = '/posts'
+        weight = 10
+    [[menus.main]]
+        name = 'About Me'
+        pageRef = '/'
         weight = 20
+    [[menus.main]]
+        name = 'Contact'
+        pageRef = '/contact'
+        weight = 30
+
+    [[menus.contacts]]
+        name = 'Email'
+        url = 'mailto:nsdigirolamo@gmail.com'
+        weight = 10
+    [[menus.contacts]]
+        name = 'LinkedIn'
+        url = 'https://linkedin.com/in/nsdigirolamo'
+        weight = 20
+    [[menus.contacts]]
+        name = 'GitHub'
+        url = 'https://github.com/nsdigirolamo'
+        weight = 30
