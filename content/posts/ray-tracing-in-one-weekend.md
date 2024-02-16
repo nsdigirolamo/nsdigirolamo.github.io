@@ -1,6 +1,11 @@
 ---
 title: "Ray Tracing in One Weekend"
 date: 2024-02-14T22:53:21-05:00
+summary: "This post is going to be about the ray tracer I'm writing in C++.
+It's based heavily around the free online textbook series *Ray Tracing in One
+Weekend* by Peter Shirley, Trevor Black, and Steve Hollasch. I've actually done
+this same project in pure C and Rust, but want to try again in C++to gain a
+deeper understanding of ray tracing and  principles."
 ---
 
 This post is going to be about the
@@ -110,6 +115,10 @@ bit better because I'm using 100 samples per pixel and a step depth of
 ![metals.png](/ray-tracing-in-one-weekend/metals.png)
 
 And dielectrics.
+
+![dielectrics.png](/ray-tracing-in-one-weekend/dielectrics.png)
+
+Next was depth of field.
 
 ![depth_of_field.png](/ray-tracing-in-one-weekend/depth_of_field.png)
 
