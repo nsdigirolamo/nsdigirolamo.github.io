@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {{ partial "head_includes.html" }}
+        <link rel="stylesheet" type="text/css" href="/css/card.css"/>
+        <style>
+            a {
+                text-decoration: none;
+            }
+        </style>
+    </head>
+    {{ partial "header.html" }}
+    <body>
+        <main>
+            <h1>{{ .Title }}</h1>
+            {{ .Content }}
+            {{ range .Pages.ByTitle }}
+                <a class="card" href="{{ .RelPermalink }}">
+                    <h1>{{ .Title }}</h1>
+                    <h2>{{ .Date.Month }} {{ .Date.Year }}</h2>
+                    <p>{{ .Summary }}</p>
+                </a>
+            {{ end }}
+        </main>
+    </body>
+    {{ partial "footer.html" }}
+</html>
