@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {{ partial "head_includes.html" }}
+    </head>
+    {{ partial "header.html" }}
+    <body>
+        <main>
+            {{ range site.Menus.contacts.ByWeight }}
+                <li style="display:block;padding:1vh"><a href="{{ .URL }}" target="_blank">{{ .Name }}</a></li>
+            {{ end }}
+        </main>
+    </body>
+    {{ partial "footer.html" }}
+</html>
