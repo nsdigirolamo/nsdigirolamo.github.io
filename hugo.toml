@@ -31,3 +31,11 @@ custom_css = ["css/custom.css"]
         name = 'GitHub'
         url = 'https://github.com/nsdigirolamo'
         weight = 30
+    [[menus.contacts]]
+        name = 'Mastodon'
+        url = 'https://hachyderm.io/@nsdigirolamo'
+        weight = 40
+    [[menus.contacts]]
+        name = 'Reddit'
+        url = 'https://reddit.com/user/nsdigirolamo/'
+        weight = 100
