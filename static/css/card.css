@@ -1,0 +1,26 @@
+.card {
+    margin: 5vh 0 5vh 0;
+    font-size: 1em;
+}
+
+.card:hover {
+    cursor: pointer;
+    color: darkgrey;
+}
+
+.card h1 {
+    font-size: 1.2em;
+    text-decoration: underline;
+}
+
+.card:hover h1 {
+    text-decoration: none;
+}
+
+.card h2 {
+    font-size: 1em;
+}
+
+.card p {
+    font-size: 1em;
+}
