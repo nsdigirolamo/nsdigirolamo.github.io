@@ -1,7 +1,7 @@
 ---
-aliases: /about /home
-date: '2024-02-14T21:58:17-05:00'
 title: 'Nicholas DiGirolamo'
+date: '2024-02-14T21:58:17-05:00'
+aliases: /about /home
 ---
 
 Welcome to my website. I'm a Computer Science undergrad at the
