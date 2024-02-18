@@ -1,6 +1,6 @@
 .card {
-    margin: 5vh 0 5vh 0;
-    font-size: 1em;
+    display: block;
+    padding: 0 0 1vh 0;
 }
 
 .card:hover {
@@ -9,7 +9,7 @@
 }
 
 .card h1 {
-    font-size: 1.2em;
+    font-size: 1.5rem;
     text-decoration: underline;
 }
 
@@ -18,9 +18,9 @@
 }
 
 .card h2 {
-    font-size: 1em;
+    font-size: 1rem;
 }
 
 .card p {
-    font-size: 1em;
+    font-size: 0.9rem;
 }
