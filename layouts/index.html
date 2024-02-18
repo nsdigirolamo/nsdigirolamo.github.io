@@ -4,9 +4,13 @@
         {{ partial "head_includes.html" }}
     </head>
     {{ partial "header.html" }}
+    <style>
+        main {
+            padding: 20vh 0 0 0;
+        }
+    </style>
     <body>
         <main>
-            <h1>{{ .Title }}</h1>
             {{ .Content }}
         </main>
     </body>
