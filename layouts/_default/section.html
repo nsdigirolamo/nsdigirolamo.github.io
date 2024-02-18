@@ -14,6 +14,7 @@
         <main>
             <h1>{{ .Title }}</h1>
             {{ .Content }}
+            <hr>
             {{ range .Pages.ByTitle }}
                 <a class="card" href="{{ .RelPermalink }}">
                     <h1>{{ .Title }}</h1>
