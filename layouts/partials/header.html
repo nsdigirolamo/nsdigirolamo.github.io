@@ -1,9 +1,7 @@
 <header>
     {{ range site.Menus.main.ByWeight }}
         <li>
-            <a href="{{ .URL }}">
-                {{ .Name }}
-            </a>
+            <a href="{{ .URL }}">{{ .Name }}</a>
         </li>
     {{ end }}
 </header>
