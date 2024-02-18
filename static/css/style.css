@@ -59,6 +59,18 @@ li {
     padding: 1vh 0 1vh 0;
 }
 
+header li {
+    display: inline;
+
+    @media only screen and (orientation: portrait) {
+        margin-right: 3vw;
+    }
+
+    @media only screen and (orientation: landscape) {
+        margin-right: 1.75vw;
+    }
+}
+
 main {
     flex-grow: 1;
     padding: 5vh 0 10vh 0;
