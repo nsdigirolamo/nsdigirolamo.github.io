@@ -5,6 +5,9 @@ date: 2024-02-16T17:14:14-05:00
 
 # Nick's Ray Tracer
 
+Note: This page was originally a README file. You can view the original project
+[here](https://github.com/nsdigirolamo/nicks-ray-tracer).
+
 A ray tracer written in Rust following the [Ray Tracing in One Weekend](https://raytracing.github.io/) book series. This is a follow-up to my [previous attempt](https://github.com/nsdigirolamo/ray-tracing-in-one-weekend) where I did the same exact thing but it was written in C instead.
 
 I'm hoping to complete all three books for this project, and afterwards I might even do some more stuff like making it multithreaded or something. Below are some example outputs so far.
