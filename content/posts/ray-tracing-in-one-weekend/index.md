@@ -13,7 +13,7 @@ This post is going to be about the
 in C++. This is my third attempt now at making a ray tracer. My previous
 projects on this topic can be found
 [here](https://github.com/nsdigirolamo/ray-tracing-in-one-weekend) and
-[here](https://github.com/nsdigirolamo/nicks-ray-tracer). You can also find an old blog post I made about one of my previous attempts [here](/archive/old-ray-tracing-in-one-weekend) All three projects are
+[here](https://github.com/nsdigirolamo/nicks-ray-tracer). All three projects are
 based heavily around the free online textbook series
 [*Ray Tracing in One Weekend*](https://raytracing.github.io/) by Peter Shirley,
 Trevor Black, and Steve Hollasch.
@@ -27,21 +27,25 @@ feature ideas, but I am going to try to avoid just reading the code explanations
 and just making a one-to-one copy of their implementation.
 
 Most importantly, I'm going to try my best to solve problems with my own
-research (googling) and only resort to the textbook if I get really stuck.
+research and only resort to the textbook if I get really stuck.
 
-![test](images/testing_normals.png)
+Below is one of the first images I created. I projected rays from the camera
+and when those rays intersected with the sphere I would return their surface
+normals. Then, I used the x, y, and z components of those normals to color the
+sphere's surface.
 
-Above is one of the first images I created. Intersections with the sphere
-returned the surface normals at each intersection point, and then I used those
-normals to color the sphere. After some work, I managed to generate something
-like the next image.
+![A test image of a sphere with colored normals.](images/testing_normals.png)
 
-![banding.png](images/banding.png)
+## Diffuse Materials
 
-I added a diffuse material and the ability to check for plane intersections. But
- clearly, something is wrong. What's going on with all that weird banding? The
- issue has to do with my intersection code. Below is an approximation of what's
- going on:
+My next task was to add a diffuse material for the sphere, so it could start
+bouncing light. You can see my first attempt below.
+
+![An image of a diffuse sphere that incorrectly scatters light.](images/banding.png)
+
+Clearly, something is wrong. What's going on with all that weird banding? The
+issue has to do with my intersection code. Below is an approximation of what's
+going on:
 
 ```
 if ( /** check for ray intersection */ ) {
@@ -56,8 +60,8 @@ if ( /** check for ray intersection */ ) {
 }
 ```
 
-Hopefully the above pseudocode isn't too opaque. I check to make sure an
-intersection exists, and if it does I get the distance along my ray where the
+Hopefully the above pseudocode isn't too difficult to read. I check to make sure
+an intersection exists, and if it does I get the distance along my ray where the
 intersection occurs. The issue comes along when I start recursively scattering
 rays.
 
@@ -65,14 +69,18 @@ Once an intersection occurs, I spawn a new ray with its origin at the
 intersection point. The ray will start at this origin, and then look along
 whatever direction its pointing for an intersection with an object.
 
-But the origin of my scattered ray is going to be on the very surface of an
-object, so the ray will detect an intersection at its own origin! I suspect
-the banding comes from some weird floating point issues, where sometimes the
-origin isn't *exactly* on the surface of the plane, so the rays fail to
-intersect with their own origins.
+![A diagram of a ray being properly scattered by an object.](images/properly_scattered.png)
 
-Below solves the issue. I just need to throw out any intersections below some
-small minimum distance.
+But the origin of my scattered ray is going to be on the very surface of an
+object, so the ray *might* detect an intersection at its own origin! I suspect
+the banding comes from some weird floating point issues, where sometimes the
+origin isn't *exactly* on the surface of the plane, so the rays sometimes manage
+to not intersect with the surfaces they're originating from.
+
+![A diagram of a ray being improperly scattered by an object.](images/improperly_scattered.png)
+
+Below solves the issue. I just need to throw out any intersections that don't
+meet some some minimum distance along the ray.
 
 ```
 double minimum_distance = 0.0001
@@ -102,45 +110,69 @@ textbook as religiously as I was in my last two ray tracing projects, I would
 have quickly found their
 [solution](https://raytracing.github.io/books/RayTracingInOneWeekend.html#diffusematerials/fixingshadowacne)
 to this problem. They seemed to agree with me that the issue came down to some
-floating point rounding issues. Regardless, I'm happy I was able to find the
+floating point issues. Regardless, I'm happy I was able to find the
 fix on my own without simply being given the solution.
 
-![fixed_banding.png](images/fixed_banding.png)
+![An image of a diffuse sphere that correctly scatters light.](images/fixed_banding.png)
+
+## Metallic Materials
 
 The next step for me was the implement the other materials from the textbook.
-I knew I needed metals and dielectrics. Below are my metals. The metals look a
-bit better because I'm using 100 samples per pixel and a step depth of
-50 bounces. The previous images only used 10 for both values.
+I knew I needed metals and refractive materials. Below are my metals.
 
-![metals.png](images/metals.png)
+![An image of metallic spheres that reflect light.](images/metals.png)
 
-And dielectrics.
+## Refractive Materials
 
-![dielectrics.png](images/dielectrics.png)
+The refractive materials and their related concepts were something I just could 
+not get into code. I spent a really long time studying a lot of different 
+resources to try to do it on my own. The wikipedia page for 
+[Snell's Law](https://en.wikipedia.org/wiki/Snell's_law) and 
+[this](https://physics.stackexchange.com/a/436252) physics stack exchange post 
+about Snell's Law in vector form were helpful, and from those resources I feel
+like I have an OK grasp on the theory behind refraction. I just don't
+understand it well enough to translate it into the ray tracer.
+
+So I just ended up copying the code from textbook. Not ideal, but I tried my
+best. Eventually I want to return to refractive materials, but for now I need 
+to move on or else I'll be stuck here for much longer than I want.
+
+![An image of glass spheres that refract light.](images/dielectrics.png)
+
+## Depth of Field
 
 Next was depth of field.
 
-![depth_of_field.png](images/depth_of_field.png)
+Internally, the code creates this depth of field effect with an infinitely thin
+disk behind the view port. Ray origins are randomly sampled from the thin disk,
+and are projected into the view port. The view port itself exists as a plane in 
+the 3D scene, and objects in the scene are most in focus where the view plane 
+intersects with them. For the longest time, my depth of field effect was just 
+not working. The entire scene was out of focus instead of just the objects that 
+I wanted. 
 
-This image took an embarrassingly long time time code. Internally, the code
-creates this blur effect with a thin disk behind the view port. The view port
-exists in the 3D scene, and where-ever the view plane intersects 3D space,
-that is where objects are most in focus.
+![A blurry image of spheres at various distances from the camera.](images/blurry.png)
 
-For the longest time, my depth of field effect was just not working. The
-entire scene was blurry instead of just the closer and further away objects.
-Eventually, I tracked down the reason.
+Eventually, I discovered the reason for this. 
 
-My ray tracer's camera has an origin and a viewport. The origin is where rays
-originate from, and the viewport is where the rays will be directed. For each
-pixel, I calculate the pixel's location in 3D space based on this viewport. So
-to color a pixel in the resulting image, I just point the ray towards that
-pixel's location on the viewport. And this works great if everything is always
-in focus.
+Up to this point, my ray tracer has been simulating a camera with a pinhole lens
+with perfect focus. To get the color for a pixel, I would project a ray from
+the **camera's origin** to the pixel's location in space. Since every ray would
+have the same origin and same direction, everything would be in focus.
 
-But when I wanted to add a defocus, the ray's origin was now no longer the same
-as the camera origin. My pinhole camera became a very-wide-hole camera, and thus
-the rays were no longer pointing towards the pixel location in space. All my
-rays were offset by the random defocus offset, so everything was blurry! To fix
-this, all I had to do was adjust for the offset and now only the things outside
-of the viewport's plane are blurry, as I intentioned!
+But when I wanted to add a defocus, the **ray origin** was now no longer the same
+as the **camera origin**. Ray directions were the same, but their origins were
+offset my some amount. I was not compensating for this offset, so rays would
+not be focused on the pixel they were supposed to be pointed at. My camera's
+lens was suddenly no longer a pinhole, but instead was much wider. This was the
+cause of my camera's complete lack of focus. To fix this, all I had to do was
+adjust for the offset.
+
+Below you can see what I mean. The left diagram is depth of field working
+properly. The right is the unadjusted rays.
+
+![A diagram of rays being properly and improperly focused.](images/improper_focus.png)
+
+And below is depth of field working properly!
+
+![An image of spheres at various distances from the camera. The furthest and closest spheres are out of focus.](images/depth_of_field.png)
