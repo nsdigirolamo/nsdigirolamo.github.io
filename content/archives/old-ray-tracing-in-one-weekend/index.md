@@ -1,6 +1,7 @@
 ---
-title: "Old Ray Tracing in One Weekend"
 date: 2024-02-16T17:14:14-05:00
+title: "Old Ray Tracing in One Weekend"
+type: article
 ---
 
 # Nick's Ray Tracer
