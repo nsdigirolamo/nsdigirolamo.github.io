@@ -18,6 +18,10 @@ custom_css = ["css/custom.css"]
         name = 'Contacts'
         pageRef = '/contacts'
         weight = 30
+    [[menus.main]]
+        name = 'Works That Inspire'
+        pageRef = '/posts/works-that-inspire'
+        weight = 40
 
     [[menus.contacts]]
         name = 'Email'
