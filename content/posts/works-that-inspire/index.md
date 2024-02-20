@@ -1,9 +1,10 @@
 ---
-title: "Works That Inspire"
 date: 2024-02-19T19:31:04-05:00
 summary: "Here is a constantly updating list of blog posts and other online
 works that I think are inspirational, interesting, or otherwise worthy of being
 shared with other people."
+title: "Works That Inspire"
+type: article
 ---
 
 Here is a constantly updating list of blog posts and other online works that I
