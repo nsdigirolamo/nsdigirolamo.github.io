@@ -3,16 +3,12 @@
     <head>
         {{ partial "head_includes.html" }}
     </head>
-    <style>
-        main p {
-            text-align: justify;
-        }
-    </style>
     {{ partial "header.html" }}
     <body>
         <main>
             <h1>{{ .Title }}</h1>
-            <h2>{{ .Date.Month }} {{ .Date.Year }}</h2>
+            <h4>{{ .Date.Month }} {{ .Date.Year }}</h>
+            <hr>
             {{ .Content }}
         </main>
     </body>
