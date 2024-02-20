@@ -21,17 +21,6 @@ body {
     }
 }
 
-code {
-    max-width: 100%;
-    font-size: 0.75rem;
-}
-
-pre code {
-    max-width: 100%;
-    overflow: auto;
-    display: inline-block;
-}
-
 footer {
     font-size: 0.75rem;
     margin: 10vh 0 2vh 0;
@@ -60,14 +49,6 @@ li {
 
 header li {
     display: inline;
-
-    @media only screen and (orientation: portrait) {
-        margin-right: 5vw;
-    }
-
-    @media only screen and (orientation: landscape) {
-        margin-right: 1.75vw;
-    }
 }
 
 main {
