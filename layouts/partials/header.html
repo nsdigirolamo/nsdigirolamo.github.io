@@ -1,7 +1,9 @@
 <header>
-    {{ range site.Menus.main.ByWeight }}
-        <li>
-            <a href="{{ .URL }}">{{ .Name }}</a>
-        </li>
-    {{ end }}
+    <nav class="navbar">
+        {{ range site.Menus.main.ByWeight }}
+            <span class="nav-element">
+                <a class="nav-link" href="{{ .URL }}">{{ .Name }}</a>
+            </span>
+        {{ end }}
+    </nav>
 </header>
