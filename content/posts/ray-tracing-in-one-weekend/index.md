@@ -1,11 +1,12 @@
 ---
-title: "Ray Tracing in One Weekend"
 date: 2024-02-14T22:53:21-05:00
 summary: "This post is going to be about the ray tracer I'm writing in C++.
 It's based heavily around the free online textbook series *Ray Tracing in One
 Weekend* by Peter Shirley, Trevor Black, and Steve Hollasch. I've actually done
 this same project in pure C and Rust, but want to try again in C++ to gain a
 deeper understanding of ray tracing and  principles."
+title: "Ray Tracing in One Weekend"
+type: article
 ---
 
 This post is going to be about the
@@ -47,7 +48,7 @@ Clearly, something is wrong. What's going on with all that weird banding? The
 issue has to do with my intersection code. Below is an approximation of what's
 going on:
 
-```
+```C++
 if ( /** check for ray intersection */ ) {
 
 	double distance = /** distance along the ray where the intersection occurs */
@@ -82,7 +83,7 @@ to not intersect with the surfaces they're originating from.
 Below solves the issue. I just need to throw out any intersections that don't
 meet some some minimum distance along the ray.
 
-```
+```C++
 double minimum_distance = 0.0001
 
 if ( /** check for ray intersection */ ) {
