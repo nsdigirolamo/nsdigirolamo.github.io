@@ -8,7 +8,7 @@ aliases: /about /home
 
 Welcome to my website. I'm a Computer Science undergrad at the
 University of Delaware with a concentration in Systems and Networks.
-I'm also currently looking for full-time software engineering positions. My
+I'm also currently an incoming TDP Software Engineer at GEICO. My
 pronouns are he/him.
 
 I'm going to be using this site as a place to show off my personal projects,
