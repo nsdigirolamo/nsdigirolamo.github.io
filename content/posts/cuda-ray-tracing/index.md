@@ -4,6 +4,7 @@ date: 2024-03-26T22:42:26-04:00
 type: article
 summary: "I finally got around to parallelizing my ray tracer on the GPU. It has
 been pretty challenging so far."
+draft: true
 ---
 
 So after getting to a pretty good stopping point with my
@@ -65,3 +66,37 @@ and took 1482.83 seconds (almost 25 minutes)!
 
 Clearly, the serial version looks much better but I'm confident once I have
 randomization working in the parallel version, they'll look exactly the same.
+
+## Randomization Roadblock
+
+Randomization has been a challenge. The cuRAND library's preferred way of
+generating random numbers is to give each thread its own curandState... and I
+simply do not have enough memory on my GPU to accomplish that. To give you some
+grasp of the numbers involved, here are the numbers for a 1080 x 1920 image with
+50 samples per pixel. I will have 1080 x 1920 x 50 = 103,680,000 samples, and
+one thread per sample.
+
+- 5.3 GB free before doing any kernel setup.
+- 25.2 MB for the objects in my scene.
+- 2.49 GB for the array of samples. Each sample is 24 bytes.
+- 4.97 GB for the array of curandStates. Each curandState is 48 bytes.
+
+The curandStates alone take up nearly all of the available memory on my GPU. And
+this is a pretty big problem. I can't have threads share curandStates (at least
+I don't think I can) so I'm going to need to reshape my data so it all fits
+within memory budget.
+
+My current plan is to process all samples at once in parallel. These samples are
+then reduced to a single image as a final step.
+
+Instead, I could process a single sample for all pixels, average that color onto
+the final image, and process a new set of samples. This will likely be slower than
+my current plan because I'm going to be launching and relaunching kernels in a loop,
+but at least I won't be maxing out my GPU memory.
+
+And here is the output image! This was done using my new strategy, and it only
+took me 5.71 seconds! I guess running a kernel in a loop doesn't cost as much
+overhead as I thought it would. This new parallelized ray tracer has complete
+parity with my serial version... so now it's time to do some drag racing.
+
+![A great looking image, created on the GPU](images/parallel_good.png)
