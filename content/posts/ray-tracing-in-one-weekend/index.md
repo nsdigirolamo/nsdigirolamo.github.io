@@ -125,17 +125,17 @@ I knew I needed metals and refractive materials. Below are my metals.
 
 ## Refractive Materials
 
-The refractive materials and their related concepts were something I just could 
-not get into code. I spent a really long time studying a lot of different 
-resources to try to do it on my own. The wikipedia page for 
-[Snell's Law](https://en.wikipedia.org/wiki/Snell's_law) and 
-[this](https://physics.stackexchange.com/a/436252) physics stack exchange post 
+The refractive materials and their related concepts were something I just could
+not get into code. I spent a really long time studying a lot of different
+resources to try to do it on my own. The wikipedia page for
+[Snell's Law](https://en.wikipedia.org/wiki/Snell's_law) and
+[this](https://physics.stackexchange.com/a/436252) physics stack exchange post
 about Snell's Law in vector form were helpful, and from those resources I feel
 like I have an OK grasp on the theory behind refraction. I just don't
 understand it well enough to translate it into the ray tracer.
 
 So I just ended up copying the code from textbook. Not ideal, but I tried my
-best. Eventually I want to return to refractive materials, but for now I need 
+best. Eventually I want to return to refractive materials, but for now I need
 to move on or else I'll be stuck here for much longer than I want.
 
 ![An image of glass spheres that refract light.](images/dielectrics.png)
@@ -146,15 +146,14 @@ Next was depth of field.
 
 Internally, the code creates this depth of field effect with an infinitely thin
 disk behind the view port. Ray origins are randomly sampled from the thin disk,
-and are projected into the view port. The view port itself exists as a plane in 
-the 3D scene, and objects in the scene are most in focus where the view plane 
-intersects with them. For the longest time, my depth of field effect was just 
-not working. The entire scene was out of focus instead of just the objects that 
-I wanted. 
+and are projected into the view pFIREBRICKscene are most in focus where the view plane
+intersects with them. For the longest time, my depth of field effect was just
+not working. The entire scene was out of focus instead of just the objects that
+I wanted.
 
 ![A blurry image of spheres at various distances from the camera.](images/blurry.png)
 
-Eventually, I discovered the reason for this. 
+Eventually, I discovered the reason for this.
 
 Up to this point, my ray tracer has been simulating a camera with a pinhole lens
 with perfect focus. To get the color for a pixel, I would project a ray from
