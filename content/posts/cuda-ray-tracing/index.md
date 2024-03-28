@@ -7,31 +7,49 @@ been pretty challenging so far."
 draft: true
 ---
 
-So after getting to a pretty good stopping point with my
-[ray tracer]( {{< relref "ray-tracing-in-one-weekend" >}}) I decided I wanted to try
-to parallelize it on my GPU. I learned how to do a bit of CUDA programming during
-one of my university courses, so I decided to take that route since I already
-had a bit of experience. I took a look at my existing code and decided I needed
-to make some major changes in order to get it to work nicely with CUDA.
+This past winter I completed the first book of the [Ray Tracing in One Weekend](https://raytracing.github.io/)
+book series by Peter Shirley, Trever D. Black, and Steve Hollasch. My ray tracer
+ran, but it did not run particularly well. So after getting to a pretty good
+stopping point, I decided it would be a good exercise to try to accelerate
+my code with parallelization. I learned how to do a bit of CUDA programming
+during one of my university courses, so I decided to take that route to improve
+my ray tracer.
 
 ## Reformatting and Restructuring
 
-The first thing I did was completely remove my Matrix class template. This was
-the base for my Vector class template, and I originally created it because I
-thought I was going to need it for matrix transformations. I was wrong - I have
-never actually used it for anything, and it's really only added unnecessary
-complexity to my project.
+Getting started, the first thing I decided to do was cut out the features that
+weren't really contributing anything to the project, or that would be an active
+obstacle when using CUDA.
 
-Next, I took a look at all of my remaining classes and made sure they were no
-longer using the C++ standard library. Unfortunately, the standard library is
-only [supported in CUDA host code](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html?highlight=standard%20library#standard-library)
-and all of my class objects were going to be used in a CUDA device kernel in one
-way or another, so they had to be clean of the standard library. The hardest
-task during this was replacing all of my nice smart pointers with raw pointers.
-I am no stranger to manual memory management so it wasn't too hard of a transition,
-but it took a lot of time to make sure I was doing everything correctly.
+For example, my vector class template actually inherited a lot of its functionality
+from a matrix class template. I originally had the matrix class template because
+I thought I was going to need it for matrix transformations. I was wrong - I have
+never actually used the matrices for anything, and they've only really added
+unnecessary complexity to my codebase. So I removed the matrices, and had the 
+vectors just store all of their own functionality.
+
+Next, I took a look at all of my remaining classes and made sure they didn't
+make any use of the C++ standard library. Unfortunately, the standard library
+is only [supported in CUDA host code.](https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html?highlight=standard%20library#standard-library) All of my classes will be used in
+a CUDA device kernel, so they all needed to be clean of the standard library.
+The most difficult part of this process was getting rid of all of my nice smart
+pointers and replacing them with raw pointers. I don't find manual memory management
+to be too hard, but it was still a pretty involved process because I used unique
+and shared pointers to keep track of my abstract classes, and all of that functionality
+needed to be replaced with raw pointers instead.
 
 ## Kernel Design
+
+Eventually, I reached the point where I could start working on new stuff! First,
+I identified a few places in my program that could and could not be parallelized.
+
+### What could be parallelized?
+
+- **Pixel Sampling:** Each pixel in the image gets $x$ samples, which are averaged
+together to produce a final color. These samples can be calculated independently,
+so they were a perfect candidate for parallelization.
+- Intersection detection. 
+
 
 Eventually, I reached the point where I could start doing new stuff! To parallelize
 my code, there were a few paths I considered, but I settled on the following
@@ -95,8 +113,19 @@ my current plan because I'm going to be launching and relaunching kernels in a l
 but at least I won't be maxing out my GPU memory.
 
 And here is the output image! This was done using my new strategy, and it only
-took me 5.71 seconds! I guess running a kernel in a loop doesn't cost as much
+took me 5.71 seconds!
+
+![A great looking image, created on the GPU](images/parallel_good.png)
+
+I guess running a kernel in a loop doesn't cost as much
 overhead as I thought it would. This new parallelized ray tracer has complete
 parity with my serial version... so now it's time to do some drag racing.
 
-![A great looking image, created on the GPU](images/parallel_good.png)
+## Some Fun Comparisons
+
+Below is another 1080 x 1920 image rendered in parallel. It took 4.35 seconds
+to render with 50 samples per pixel and a maximum bounce depth of 50. I rendered
+an equivalent image on the serial program, and it took 1186.39 seconds (almost 20
+minutes)!
+
+![An interesting image showcasing depth of field](images/depth.png)
