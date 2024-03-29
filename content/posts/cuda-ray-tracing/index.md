@@ -4,7 +4,6 @@ date: 2024-03-26T22:42:26-04:00
 type: article
 summary: "I finally got around to parallelizing my ray tracer on the GPU. It has
 been pretty challenging so far."
-draft: true
 ---
 
 This past winter I completed the first book of the [Ray Tracing in One Weekend](https://raytracing.github.io/)
@@ -40,92 +39,117 @@ needed to be replaced with raw pointers instead.
 
 ## Kernel Design
 
-Eventually, I reached the point where I could start working on new stuff! First,
-I identified a few places in my program that could and could not be parallelized.
+Eventually, I reached the point where I could start working on new stuff! I
+identified two key areas that could be parallelized:
 
-### What could be parallelized?
+- **Pixel Sampling:** Each pixel in the image gets a certain number of samples,
+which are averaged together to produce a final color. These samples can be 
+calculated independently, so I can assign each sample its own thread and calculate
+them all in parallel.
+- **Intersection Detection:** Each sample has its own ray that needs to be checked
+for intersections between all the objects in a scene. These intersections can
+also be calculated independently, so I could also assign each thread an object
+in the scene, and just get the thread to check if the ray intersects its
+assigned object.
 
-- **Pixel Sampling:** Each pixel in the image gets $x$ samples, which are averaged
-together to produce a final color. These samples can be calculated independently,
-so they were a perfect candidate for parallelization.
-- Intersection detection. 
+And one area that I didn't think could be ran in parallel:
 
+- **Sample Tracing:** The actual ray tracing process for each ray is dependent
+on the results of the previous ray, so I did not really see a way of parallelizing
+it. If I cast a ray from the camera, I won't be able to know what it has hit
+until I've actually done the intersection detection. I can't calculate future
+rays until I know the results of the current ray.
 
-Eventually, I reached the point where I could start doing new stuff! To parallelize
-my code, there were a few paths I considered, but I settled on the following
-because I considered it to be the simplest:
+As a first step, I decided to focus on only the pixel sampling process. I would
+do this with three main kernels:
 
-- In the first kernel, each thread would calculate a single sample of a single
-pixel. If I had a 100 by 100 pixel image with 10 samples per pixel, I would have
-100 * 100 * 10 = 100,000 threads.
-- In the same kernel, each thread would store its sample's color information in
-a single large 3D color array.
-- After all threads are done calculating the samples, I would reduce the 3D sample
-array down to a 2D pixel array with a new kernel.
-- The 2D pixel array could then be copied to host code and written to a file.
+1. The first kernel would calculate all samples for all pixels in parallel. This
+would mean launching a number of threads equal to the display resolution multiplied
+by the number of samples per pixel. For example, if I was trying to render a
+1920 x 1080 resolution image with 50 samples per pixel, I would be launching 1920 * 
+1080 * 50 = 103,680,000 threads, and each thread would be assigned a sample.
+
+2. The second kernel would reduce the results of the first kernel down to a two-dimensional
+array pixel values. The first kernel would generate a 1080 * 1920 * 50 three-dimensional
+array of sampled color values, and the second kernel would add all of those values to
+create just a 1080 * 1920 array of pixel color values.
+
+3. The third kernel would divide the results of the second kernel by the number
+of samples per pixel. This is done to average the colors and ensure they're not
+just huge sums of the sample values.
 
 I got to work implementing my kernels, and eventually created a compilable program!
 Here is the first image I managed to output with my parallelized code:
 
 ![An image of a sphere with strangely circular shadows.](images/first_render.png)
 
-You can see it doesn't look great, but I was very excited at finally getting
-an output from my GPU. Right now, I think the weirdness partially comes from the
-fact that there's no randomization yet. CUDA device code has its own pseudo-random
-number generators available via [cuRAND](https://docs.nvidia.com/cuda/curand/index.html)
-and at this point I hadn't gotten around to implementing any of it yet.
+You can see it didn't look great, but I was very excited to finally get an output
+from code ran on my GPU. The weirdness of the image is due to the fact that I
+didn't have randomly scattered rays. CUDA device code has its own random number
+generators available via [cuRAND](https://docs.nvidia.com/cuda/curand/index.html),
+and I had not yet implemented it.
 
-The above image was rendered at 1080 x 1920 resolution with 50 samples per pixel
-and a maximum bounce depth of 50 bounces. It rendered in parallel in only 5.25
-seconds! For context, the below image was rendered in serial with the same parameters
-and took 1482.83 seconds (almost 25 minutes)!
+The above image was rendered at 1080 by 1920 resolution with 50 samples per pixel
+and a maximum bounce depth of 50 bounces. It was rendered in parallel in only 5.25
+seconds! For context, the below image is roughly equivalent and was rendered 
+in serial with the same parameters and took 1482.83 seconds (almost 25 minutes)!
 
 ![A better looking image of a sphere that was rendered in serial.](images/serial_render.png)
 
-Clearly, the serial version looks much better but I'm confident once I have
-randomization working in the parallel version, they'll look exactly the same.
+Clearly, the serial version looks much better but I was confident they would
+look exactly the same once I got the cuRAND library involved.
 
-## Randomization Roadblock
+## A Random Roadblock
 
-Randomization has been a challenge. The cuRAND library's preferred way of
-generating random numbers is to give each thread its own curandState... and I
-simply do not have enough memory on my GPU to accomplish that. To give you some
-grasp of the numbers involved, here are the numbers for a 1080 x 1920 image with
-50 samples per pixel. I will have 1080 x 1920 x 50 = 103,680,000 samples, and
-one thread per sample.
+Randomization was a challenge. The cuRAND library's preferred way of generating
+random numbers is to give each thread its own state, called a curandState, to
+generate random numbers. The issue is that my GPU simply did not have enough
+video memory to accomplish giving each thread its own state. For context, here
+is the memory information for a 1080 * 1920 image rendered with 50 samples per
+pixel (103,680,000 total threads):
 
-- 5.3 GB free before doing any kernel setup.
-- 25.2 MB for the objects in my scene.
-- 2.49 GB for the array of samples. Each sample is 24 bytes.
-- 4.97 GB for the array of curandStates. Each curandState is 48 bytes.
+- My GPU had 5.3 GB of free memory at its disposal.
+- I used 25.2 MB to initialize the two objects in my scene (a sphere and a plane).
+- I used 2.49 GB to store the 3D array of sample color data. Each color object is 24 bytes.
+- I used 4.97 GB to store the 3D array of curandStates. Each curandState is 48 bytes.
 
-The curandStates alone take up nearly all of the available memory on my GPU. And
-this is a pretty big problem. I can't have threads share curandStates (at least
-I don't think I can) so I'm going to need to reshape my data so it all fits
-within memory budget.
+The curandStates alone took up nearly all of the available memory on my GPU.
+This was a big issue for me. I couldn't have threads share states, so I needed
+to reshape my parallel algorithm to fit within my memory budget.
 
-My current plan is to process all samples at once in parallel. These samples are
-then reduced to a single image as a final step.
+## Another Kernel Design
 
-Instead, I could process a single sample for all pixels, average that color onto
-the final image, and process a new set of samples. This will likely be slower than
-my current plan because I'm going to be launching and relaunching kernels in a loop,
-but at least I won't be maxing out my GPU memory.
+My existing plan was to process all samples at once in parallel. This takes
+too much memory, so here's the new plan:
+
+1. The first kernel calculates samples for each pixel in parallel, but instead
+of calculating all samples for all pixels at once, we only calculate the results
+for a single sample. We can store this sample in a 2D array, and then run the
+kernel again in a loop, storing the sample data in the same array. We loop for
+each sample, and by the end will have a result that would have been the same as
+out first two previous kernels.
+
+2. The second kernel is the same as the third above. We still will need to divide
+the 2D array to get the averaged colors.
+
+Now, I only need about 50 MB to store the color data, and 100 MB to store the
+random state data! That gives me a lot of room in my memory budget to do other
+things later if I choose.
 
 And here is the output image! This was done using my new strategy, and it only
-took me 5.71 seconds!
+took me 5.71 seconds! I was concerned it would take longer because I'm launching
+and relaunching kernels multipl times, but it seems like that doesn't really
+effect its performance.
 
 ![A great looking image, created on the GPU](images/parallel_good.png)
 
-I guess running a kernel in a loop doesn't cost as much
-overhead as I thought it would. This new parallelized ray tracer has complete
-parity with my serial version... so now it's time to do some drag racing.
+And here's a final render that I did for the end of the first *Ray Tracing in One
+Weekend* book. This took 1755.42 seconds to render (around 30 minutes). It's
+a 1920 * 1080 image but I rendered it with 100 samples per pixel with a maximum
+bounce depth of 100.
 
-## Some Fun Comparisons
+![A great looking final render](images/book1_final.png)
 
-Below is another 1080 x 1920 image rendered in parallel. It took 4.35 seconds
-to render with 50 samples per pixel and a maximum bounce depth of 50. I rendered
-an equivalent image on the serial program, and it took 1186.39 seconds (almost 20
-minutes)!
-
-![An interesting image showcasing depth of field](images/depth.png)
+This new parallelized ray tracer has complete parity with my serial version, and
+it's a lot more performant than the serial version. I'm really happy with the
+results.
