@@ -28,4 +28,5 @@ other people.
 
 - [Bing: “I will not harm you unless you harm me first”](https://simonwillison.net/2023/Feb/15/bing/) by Simon Willison
 
-
+## Art
+- [Spectral Ray Tracing](https://larswander.com/writing/spectral-ray-tracing/) by Lars Wander
