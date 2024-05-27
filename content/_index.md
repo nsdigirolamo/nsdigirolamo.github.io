@@ -6,11 +6,8 @@ aliases: /about /home
 
 # Nicholas DiGirolamo
 
-Welcome to my website. I'm a Computer Science undergrad at the
-University of Delaware with a concentration in Systems and Networks.
-I'm also currently an incoming TDP Software Engineer at GEICO. My
-pronouns are he/him.
+Welcome to my website. I'm a software developer on the internet!
 
 I'm going to be using this site as a place to show off my personal projects,
 to hold research for potential future projects, and to archive cool things I
-find on the internet.
+find online.

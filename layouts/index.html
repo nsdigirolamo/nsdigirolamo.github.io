@@ -12,6 +12,14 @@
     <body>
         <main>
             {{ .Content }}
+            <hr>
+            <nav class="navbar" style="display:flex">
+                {{ range site.Menus.contacts.ByWeight }}
+                    <span class="nav-element" style="padding:0">
+                        <a class="nav-link" href="{{ .URL }}">{{ .Name }}</a>
+                    </span>
+                {{ end }}
+            </nav>
         </main>
     </body>
     {{ partial "footer.html" }}

@@ -2,8 +2,8 @@
 title: "Cuda Ray Tracing"
 date: 2024-03-26T22:42:26-04:00
 type: article
-summary: "I finally got around to parallelizing my ray tracer on the GPU. It has
-been pretty challenging so far."
+summary: "I finally got around to parallelizing my ray tracer on the GPU. It was
+pretty challenging."
 ---
 
 This past winter I completed the first book of the [Ray Tracing in One Weekend](https://raytracing.github.io/)
@@ -24,7 +24,7 @@ For example, my vector class template actually inherited a lot of its functional
 from a matrix class template. I originally had the matrix class template because
 I thought I was going to need it for matrix transformations. I was wrong - I have
 never actually used the matrices for anything, and they've only really added
-unnecessary complexity to my codebase. So I removed the matrices, and had the 
+unnecessary complexity to my codebase. So I removed the matrices, and had the
 vectors just store all of their own functionality.
 
 Next, I took a look at all of my remaining classes and made sure they didn't
@@ -43,7 +43,7 @@ Eventually, I reached the point where I could start working on new stuff! I
 identified two key areas that could be parallelized:
 
 - **Pixel Sampling:** Each pixel in the image gets a certain number of samples,
-which are averaged together to produce a final color. These samples can be 
+which are averaged together to produce a final color. These samples can be
 calculated independently, so I can assign each sample its own thread and calculate
 them all in parallel.
 - **Intersection Detection:** Each sample has its own ray that needs to be checked
@@ -66,7 +66,7 @@ do this with three main kernels:
 1. The first kernel would calculate all samples for all pixels in parallel. This
 would mean launching a number of threads equal to the display resolution multiplied
 by the number of samples per pixel. For example, if I was trying to render a
-1920 x 1080 resolution image with 50 samples per pixel, I would be launching 1920 * 
+1920 x 1080 resolution image with 50 samples per pixel, I would be launching 1920 *
 1080 * 50 = 103,680,000 threads, and each thread would be assigned a sample.
 
 2. The second kernel would reduce the results of the first kernel down to a two-dimensional
@@ -91,7 +91,7 @@ and I had not yet implemented it.
 
 The above image was rendered at 1080 by 1920 resolution with 50 samples per pixel
 and a maximum bounce depth of 50 bounces. It was rendered in parallel in only 5.25
-seconds! For context, the below image is roughly equivalent and was rendered 
+seconds! For context, the below image is roughly equivalent and was rendered
 in serial with the same parameters and took 1482.83 seconds (almost 25 minutes)!
 
 ![A better looking image of a sphere that was rendered in serial.](images/serial_render.png)

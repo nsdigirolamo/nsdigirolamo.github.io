@@ -30,3 +30,4 @@ other people.
 
 ## Art
 - [Spectral Ray Tracing](https://larswander.com/writing/spectral-ray-tracing/) by Lars Wander
+- [Life Universe](https://oimo.io/works/life/) by saharan

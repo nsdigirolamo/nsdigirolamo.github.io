@@ -1,7 +1,7 @@
 <header>
     <nav class="navbar">
         {{ range site.Menus.main.ByWeight }}
-            <span class="nav-element">
+            <span class="nav-element" style="display:inline-block">
                 <a class="nav-link" href="{{ .URL }}">{{ .Name }}</a>
             </span>
         {{ end }}

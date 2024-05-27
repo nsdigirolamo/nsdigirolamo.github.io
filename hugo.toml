@@ -7,21 +7,13 @@ custom_css = ["css/custom.css"]
 [menus]
 
     [[menus.main]]
-        name = 'Posts'
-        pageRef = '/posts'
+        name = 'Home'
+        pageRef = '/'
         weight = 10
     [[menus.main]]
-        name = 'About Me'
-        pageRef = '/'
+        name = 'Posts'
+        pageRef = '/posts'
         weight = 20
-    [[menus.main]]
-        name = 'Contacts'
-        pageRef = '/contacts'
-        weight = 30
-    [[menus.main]]
-        name = 'Works That Inspire'
-        pageRef = '/posts/works-that-inspire'
-        weight = 40
 
     [[menus.contacts]]
         name = 'Email'
