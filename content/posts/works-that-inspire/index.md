@@ -39,3 +39,4 @@ other people.
 
 - [Estimating Square Roots in Your Head](https://gregorygundersen.com/blog/2023/02/01/estimating-square-roots/) by Gregory Gundersen
 - [Math Breakdown: Anime Homing Missiles](https://blog.littlepolygon.com/posts/missile/) by Max Kaufmann
+- [Linear transformations and matrices | Chapter 3, Essence of linear algebra](https://www.youtube.com/watch?v=kYB8IZa5AuE) by 3Blue1Brown
