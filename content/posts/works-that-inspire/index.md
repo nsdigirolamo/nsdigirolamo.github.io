@@ -31,9 +31,10 @@ other people.
 
 - [Where have all the websites gone?](https://www.fromjason.xyz/p/notebook/where-have-all-the-websites-gone/) by Jason Velazquez
 
-## Machine Learning
+## Artificial Intelligence and Machine Learning
 
 - [Bing: “I will not harm you unless you harm me first”](https://simonwillison.net/2023/Feb/15/bing/) by Simon Willison
+- [The moment we stopped understanding AI [AlexNet]](https://www.youtube.com/watch?v=UZDiGooFs54) by Welch Labs
 
 ## Math
 
