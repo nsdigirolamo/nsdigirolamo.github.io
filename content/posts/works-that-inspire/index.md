@@ -1,5 +1,6 @@
 ---
-date: 2024-06-21T02:27:26.524
+date: 2024-08
+original-date: 2024-06-21T02:27:26.524
 summary: "Here is a constantly updating list of blog posts and other online
 works that I think are inspirational, interesting, or otherwise worthy of being
 shared with other people."
