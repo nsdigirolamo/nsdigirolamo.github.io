@@ -16,6 +16,15 @@ other people.
 - [Life Universe](https://oimo.io/works/life/) by saharan
 - [Spectral Ray Tracing](https://larswander.com/writing/spectral-ray-tracing/) by Lars Wander
 
+## Artificial Intelligence and Machine Learning
+
+- [Bing: “I will not harm you unless you harm me first”](https://simonwillison.net/2023/Feb/15/bing/) by Simon Willison
+- [The moment we stopped understanding AI [AlexNet]](https://www.youtube.com/watch?v=UZDiGooFs54) by Welch Labs
+
+## Computer Science
+
+- [On the cruelty of really teaching computing science](https://www.cs.utexas.edu/~EWD/transcriptions/EWD10xx/EWD1036.html) by Edsger W. Dijkstra
+
 ## Game Development
 
 - [Creating the world for my indie game [DEVLOG]](https://www.youtube.com/watch?v=wiMqixx-8EU) by JohnBrx
@@ -30,11 +39,6 @@ other people.
 ## Internet Culture
 
 - [Where have all the websites gone?](https://www.fromjason.xyz/p/notebook/where-have-all-the-websites-gone/) by Jason Velazquez
-
-## Artificial Intelligence and Machine Learning
-
-- [Bing: “I will not harm you unless you harm me first”](https://simonwillison.net/2023/Feb/15/bing/) by Simon Willison
-- [The moment we stopped understanding AI [AlexNet]](https://www.youtube.com/watch?v=UZDiGooFs54) by Welch Labs
 
 ## Math
 
