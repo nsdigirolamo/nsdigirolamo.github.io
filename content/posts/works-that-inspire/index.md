@@ -26,6 +26,10 @@ other people.
 
 - [On the cruelty of really teaching computing science](https://www.cs.utexas.edu/~EWD/transcriptions/EWD10xx/EWD1036.html) by Edsger W. Dijkstra
 
+## Design
+
+- [The Monospace Web: A minimalist design exploration](https://owickstrom.github.io/the-monospace-web/) by Oskar Wickström
+
 ## Game Development
 
 - [Creating the world for my indie game [DEVLOG]](https://www.youtube.com/watch?v=wiMqixx-8EU) by JohnBrx
