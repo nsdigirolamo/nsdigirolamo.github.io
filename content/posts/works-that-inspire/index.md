@@ -28,6 +28,7 @@ other people.
 
 ## Design
 
+- [Atkinson Hyperlegible Font](https://www.brailleinstitute.org/freefont/) by Braille Institute
 - [The Monospace Web: A minimalist design exploration](https://owickstrom.github.io/the-monospace-web/) by Oskar Wickström
 
 ## Game Development
